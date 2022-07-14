@@ -1,14 +1,21 @@
 // src/server/router/context.ts
 import * as trpc from "@trpc/server";
 import * as trpcNext from "@trpc/server/adapters/next";
+import { getSession } from "next-auth/react";
+import prisma from "../prisma";
 
-export const createContext = (opts?: trpcNext.CreateNextContextOptions) => {
+export const createContext = async (
+  opts?: trpcNext.CreateNextContextOptions
+) => {
   const req = opts?.req;
   const res = opts?.res;
+  const session = await getSession({ req });
 
   return {
     req,
     res,
+    session,
+    prisma,
   };
 };
 

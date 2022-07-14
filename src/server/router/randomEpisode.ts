@@ -7,8 +7,9 @@ export const randomEpisodeRouter = createRouter().query("randomEpisode", {
     show_ids: z.array(z.string()),
     count: z.number().nullish(),
   }),
-  async resolve({ input }) {
+  async resolve({ input, ctx }) {
     const { show_ids, count } = input;
+    const { session } = ctx;
 
     try {
       const shows_promises = show_ids.map(async (show_id) => {

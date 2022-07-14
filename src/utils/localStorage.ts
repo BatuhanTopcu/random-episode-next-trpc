@@ -1,8 +1,13 @@
 import type { Show } from "@types";
 import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
+import { trpc } from "@utils/trpc";
 
 export const useLocalShows = (): [Show[], (shows: Show[]) => void] => {
   const [localShows, setLocalShowsState] = useState<Show[]>([]);
+  const session = useSession();
+
+  const mutation = trpc.useMutation("show.set-shows");
 
   const setLocalShows = (shows: Show[]) => {
     const localStorageShows = localStorage.getItem("shows") || "[]";
@@ -21,8 +26,12 @@ export const useLocalShows = (): [Show[], (shows: Show[]) => void] => {
 
   const storageListener = (e: StorageEvent) => {
     if (e.key !== "shows") return;
-    const temp = JSON.parse(e.newValue || "[]");
+    const shows = e.newValue || "[]";
+    const temp = JSON.parse(shows) as Show[];
     setLocalShowsState(temp);
+    if (session?.status === "authenticated") {
+      mutation.mutate({ shows: temp });
+    }
   };
 
   useEffect(() => {

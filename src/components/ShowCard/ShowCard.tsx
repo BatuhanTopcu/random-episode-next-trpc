@@ -59,6 +59,7 @@ export default function ShowCard({ show }: { show: Show }) {
         <h2 className={`${overlayState ? "hide" : ""}`}>{show.overview}</h2>
       )}
       {show.backdrop_path && (
+        // eslint-disable-next-line @next/next/no-img-element
         <img
           className="show-card__bg"
           src={IMG_BASE + show.backdrop_path}
