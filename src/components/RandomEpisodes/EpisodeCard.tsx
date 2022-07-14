@@ -1,10 +1,10 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { Episode } from "@types";
+import type { EpisodeDetail } from "@types";
 
 const IMG_BASE = "http://image.tmdb.org/t/p/original";
 
 type IEpisodeCardProps = {
-  episode: Episode;
+  episode: EpisodeDetail;
   onClick: () => void;
 };
 

@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo } from "react";
-import { Show } from "@types";
+import type { Show } from "@types";
 import { addRemoveShow, useLocalShows } from "@utils/localStorage";
 const IMG_BASE = "http://image.tmdb.org/t/p/original";
 

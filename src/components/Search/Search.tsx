@@ -1,29 +1,19 @@
 import { useEffect, useRef, useState } from "react";
 import { useDebounce, useOutsideAlerter } from "@utils/hooks";
-import { Show } from "@types";
+import type { Show } from "@types";
 // import { apiSearch } from "@requests";
 import ShowCard from "@components/ShowCard";
 import SearchInput from "./SearchInput";
+import { trpc } from "@utils/trpc";
 
 export default function Search() {
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce(search, 750);
-  const [results, setResults] = useState<Show[]>([]);
   const [isOpen, setIsOpen] = useState(false);
+  const { data, isLoading } = trpc.useQuery(["search", debouncedSearch]);
 
   const searchRef = useRef(null);
   useOutsideAlerter(() => setIsOpen(false), searchRef);
-
-  useEffect(() => {
-    if (debouncedSearch.length > 2) {
-      (async () => {
-        // const data = await apiSearch(debouncedSearch);
-        // setResults(data);
-      })();
-    } else {
-      setResults([]);
-    }
-  }, [debouncedSearch]);
 
   return (
     <div className="search__container" ref={searchRef}>
@@ -39,16 +29,16 @@ export default function Search() {
         }`}
       >
         <div className="search__results__scroll">
-          {results.length === 0 && debouncedSearch.length > 2 && (
-            <div className="no-result">No results found</div>
-          )}
-          {debouncedSearch.length <= 2 && (
-            <div className="no-result">
-              Type {3 - debouncedSearch.length} more characters
-            </div>
-          )}
-          {results.length > 0 &&
-            results.map((show) => <ShowCard key={show.id} show={show} />)}
+          {data?.results.length === 0 &&
+            !isLoading &&
+            debouncedSearch.length > 0 && (
+              <div className="no-result">No results found</div>
+            )}
+          {isLoading && <div className="no-result">Loading...</div>}
+          {data &&
+            !isLoading &&
+            data.results.length > 0 &&
+            data?.results.map((show) => <ShowCard key={show.id} show={show} />)}
         </div>
       </div>
     </div>

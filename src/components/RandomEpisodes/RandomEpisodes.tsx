@@ -1,48 +1,49 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useLocalShows } from "@utils/localStorage";
 // import { getRandomEpisodes } from "@requests";
-import { Episode } from "@types";
+import type { EpisodeDetail } from "@types";
 import EpisodeCard from "./EpisodeCard";
 import LoadingBar from "@components/LoadingBar";
+import { trpc } from "@utils/trpc";
 
 export default function RandomEpisodes() {
   const [localShows] = useLocalShows();
-  const [randomEpisodes, setRandomEpisodes] = useState<Episode[]>([]);
-  const [shuffle, setShuffle] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [refresh, setRefresh] = useState(false);
+  const [episodes, setEpisodes] = useState<EpisodeDetail[]>([]);
 
+  const { data, isFetching, refetch } = trpc.useQuery(
+    [
+      "randomEpisode",
+      {
+        show_ids: localShows.map((show) => show.id.toString()),
+      },
+    ],
+    {
+      refetchOnWindowFocus: false,
+    }
+  );
+
+  const [shuffle, setShuffle] = useState(false);
   const svgRef = useRef<SVGSVGElement>(null);
 
   useEffect(() => {
-    if (localShows.length === 0) return;
-    (async () => {
-      setLoading(true);
-      const params = new URLSearchParams();
-      localShows.forEach((show) =>
-        params.append("show_id", show.id.toString())
-      );
-      params.append("count", "5");
-      // const data = await getRandomEpisodes(params);
-      // setRandomEpisodes(data);
-      setLoading(false);
-    })();
-  }, [localShows, refresh]);
+    if (data && data.episodes) setEpisodes(data.episodes);
+    else setEpisodes([]);
+  }, [data]);
 
   useEffect(() => {
-    if (randomEpisodes.length < 2) return;
-    const temp = [...randomEpisodes];
-    const first = temp.shift() as Episode;
-    setRandomEpisodes([...temp, first]);
+    if (episodes.length < 2) return;
+    const temp = [...episodes];
+    const first = temp.shift() as EpisodeDetail;
+    setEpisodes([...temp, first]);
   }, [shuffle]);
 
   return (
     <>
       <div className="episode-container">
-        {loading && <LoadingBar />}
-        {randomEpisodes.length > 0 &&
-          !loading &&
-          randomEpisodes.map((episode) => (
+        {isFetching && <LoadingBar />}
+        {episodes.length > 0 &&
+          !isFetching &&
+          episodes.map((episode) => (
             <EpisodeCard
               key={episode.id}
               onClick={() => setShuffle(!shuffle)}
@@ -53,8 +54,8 @@ export default function RandomEpisodes() {
       <div
         className="refresh-button"
         onClick={() => {
-          if (localShows.length === 0 || loading) return;
-          setRefresh(!refresh);
+          if (localShows.length === 0 || isFetching) return;
+          refetch();
           if (svgRef.current) {
             svgRef.current.animate(
               [{ transform: "rotate(360deg)" }, { transform: "rotate(0deg)" }],

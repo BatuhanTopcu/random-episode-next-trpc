@@ -1,4 +1,4 @@
-import { Show } from "@types";
+import type { Show } from "@types";
 import { useEffect, useState } from "react";
 
 export const useLocalShows = (): [Show[], (shows: Show[]) => void] => {
