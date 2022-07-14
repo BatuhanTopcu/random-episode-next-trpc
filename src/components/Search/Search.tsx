@@ -1,7 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useDebounce, useOutsideAlerter } from "@utils/hooks";
-import type { Show } from "@types";
-// import { apiSearch } from "@requests";
 import ShowCard from "@components/ShowCard";
 import SearchInput from "./SearchInput";
 import { trpc } from "@utils/trpc";
@@ -10,7 +8,10 @@ export default function Search() {
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce(search, 750);
   const [isOpen, setIsOpen] = useState(false);
-  const { data, isLoading } = trpc.useQuery(["search", debouncedSearch]);
+  const { data, isLoading } = trpc.useQuery(["search", debouncedSearch], {
+    refetchOnWindowFocus: false,
+    enabled: debouncedSearch.length > 0,
+  });
 
   const searchRef = useRef(null);
   useOutsideAlerter(() => setIsOpen(false), searchRef);

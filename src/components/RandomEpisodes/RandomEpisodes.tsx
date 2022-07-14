@@ -1,6 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { useLocalShows } from "@utils/localStorage";
-// import { getRandomEpisodes } from "@requests";
 import type { EpisodeDetail } from "@types";
 import EpisodeCard from "./EpisodeCard";
 import LoadingBar from "@components/LoadingBar";
@@ -10,7 +9,7 @@ export default function RandomEpisodes() {
   const [localShows] = useLocalShows();
   const [episodes, setEpisodes] = useState<EpisodeDetail[]>([]);
 
-  const { data, isFetching, refetch } = trpc.useQuery(
+  const { isFetching, refetch } = trpc.useQuery(
     [
       "randomEpisode",
       {
@@ -19,23 +18,25 @@ export default function RandomEpisodes() {
     ],
     {
       refetchOnWindowFocus: false,
+      onSuccess: (data) => {
+        setEpisodes(data.episodes);
+      },
+      onError: (error) => {
+        console.error(error);
+        setEpisodes([]);
+      },
+      enabled: localShows.length > 0,
     }
   );
 
-  const [shuffle, setShuffle] = useState(false);
   const svgRef = useRef<SVGSVGElement>(null);
 
-  useEffect(() => {
-    if (data && data.episodes) setEpisodes(data.episodes);
-    else setEpisodes([]);
-  }, [data]);
-
-  useEffect(() => {
+  const handleShuffle = () => {
     if (episodes.length < 2) return;
     const temp = [...episodes];
     const first = temp.shift() as EpisodeDetail;
     setEpisodes([...temp, first]);
-  }, [shuffle]);
+  };
 
   return (
     <>
@@ -46,7 +47,7 @@ export default function RandomEpisodes() {
           episodes.map((episode) => (
             <EpisodeCard
               key={episode.id}
-              onClick={() => setShuffle(!shuffle)}
+              onClick={handleShuffle}
               episode={episode}
             />
           ))}
