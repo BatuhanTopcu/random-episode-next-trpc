@@ -1,0 +1,19 @@
+@import "_reset.scss";
+@import "_fonts.scss";
+@import "_variables.scss";
+@import "components/EpisodeCard.scss";
+@import "components/ShowList.scss";
+@import "components/Search.scss";
+@import "components/ShowCard.scss";
+@import "components/EpisodeContainer.scss";
+@import "components/LoadingBar.scss";
+
+body {
+  background-color: $color-primary;
+}
+
+.App {
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}

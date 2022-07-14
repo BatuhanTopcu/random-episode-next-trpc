@@ -1,0 +1,44 @@
+$circleRadius: 20px;
+$circleCount: 5;
+$gap: 10px;
+$animationDuration: 0.2s;
+
+.loading-bar {
+  width: ($circleRadius * $circleCount) + ($gap * ($circleCount + 1));
+  height: $circleRadius * 1.5 + $gap * 2;
+  display: flex;
+  position: relative;
+  top: 40%;
+  left: 50%;
+  transform: translateX(-50%);
+  & > div {
+    width: $circleRadius;
+    height: $circleRadius;
+    border-radius: 50%;
+    position: absolute;
+    animation-timing-function: ease-in-out;
+    animation: jump $animationDuration infinite alternate;
+    bottom: $gap;
+    filter: $dark-shadow;
+  }
+  @for $i from 1 through $circleCount {
+    div:nth-child(#{$i}) {
+      left: $circleRadius * ($i - 1) + $gap * $i;
+      background-color: hsl(
+        283,
+        61%,
+        ($circleCount - $i) * calc(100 / $circleCount) * 1%
+      );
+      animation-delay: calc($animationDuration / 3 * ($i - 1));
+    }
+  }
+}
+
+@keyframes jump {
+  0% {
+    transform: translateY(0) translateX(0);
+  }
+  100% {
+    transform: translateY(calc($circleRadius / 2 * -1));
+  }
+}
