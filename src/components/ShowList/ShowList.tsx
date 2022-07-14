@@ -5,16 +5,16 @@ import { useOutsideAlerter } from "@utils/hooks";
 
 export default function ShowList() {
   const [isOpen, setIsOpen] = useState(false);
-  const [localShows, setLocalShows] = useLocalShows();
+  const [localShows] = useLocalShows();
   const divRef = useRef(null);
   useOutsideAlerter(() => setIsOpen(false), divRef);
 
   return (
-    <>
-      <div className="show-list__fab" onClick={() => setIsOpen(true)}>
+    <div ref={divRef}>
+      <div className="show-list__fab" onClick={() => setIsOpen(!isOpen)}>
         {localShows.length}
       </div>
-      <div className={`show-list__items ${isOpen ? "show" : ""}`} ref={divRef}>
+      <div className={`show-list__items ${isOpen ? "show" : ""}`}>
         <h1 className="title">Show List</h1>
         {localShows.length === 0 && (
           <h2 className="no-item">
@@ -29,6 +29,6 @@ export default function ShowList() {
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 }
