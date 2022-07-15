@@ -32,6 +32,7 @@ export default function EpisodeCard({ episode, onClick }: IEpisodeCardProps) {
       </div>
       <h1 className="overview">{episode.overview}</h1>
       {episode.show_backdrop_path && (
+        // eslint-disable-next-line @next/next/no-img-element
         <img
           className="episode-card__bg"
           src={IMG_BASE + episode.show_backdrop_path}

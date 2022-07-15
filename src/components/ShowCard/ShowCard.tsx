@@ -1,15 +1,15 @@
 import { useEffect, useState, useMemo } from "react";
 import type { Show } from "@types";
-import { addRemoveShow, useLocalShows } from "@utils/localStorage";
+import { addRemoveShow, useShows } from "@utils/shows";
 const IMG_BASE = "http://image.tmdb.org/t/p/original";
 
 type ClickState = "none" | "once" | "twice";
 
 export default function ShowCard({ show }: { show: Show }) {
-  const [localShows] = useLocalShows();
+  const [shows] = useShows();
   const isAdded = useMemo(
-    () => localShows.some((s) => s.id === show.id),
-    [localShows, show.id]
+    () => shows.some((s) => s.id === show.id),
+    [shows, show.id]
   );
   const [clickState, setClickState] = useState<ClickState>("none");
   const overlayState = useMemo(

@@ -1,44 +1,12 @@
-import React, { useRef, useState } from "react";
-import { useLocalShows } from "@utils/localStorage";
-import type { EpisodeDetail } from "@types";
+import React, { useRef } from "react";
+import { useRandomEpisodes } from "@utils/hooks";
+import type { Show } from "@types";
 import EpisodeCard from "./EpisodeCard";
 import LoadingBar from "@components/LoadingBar";
-import { trpc } from "@utils/trpc";
-import { useSession } from "next-auth/react";
 
-export default function RandomEpisodes() {
-  const [localShows] = useLocalShows();
-  const [episodes, setEpisodes] = useState<EpisodeDetail[]>([]);
-  const { status } = useSession();
-
-  const { isFetching, refetch } = trpc.useQuery(
-    [
-      "randomEpisode",
-      {
-        show_ids: localShows.map((show) => show.id.toString()),
-      },
-    ],
-    {
-      refetchOnWindowFocus: false,
-      onSuccess: (data) => {
-        setEpisodes(data.episodes);
-      },
-      onError: (error) => {
-        console.error(error);
-        setEpisodes([]);
-      },
-      enabled: localShows.length > 0 && status !== "loading",
-    }
-  );
-
+export default function RandomEpisodes({ shows }: { shows: Show[] }) {
   const svgRef = useRef<SVGSVGElement>(null);
-
-  const handleShuffle = () => {
-    if (episodes.length < 2) return;
-    const temp = [...episodes];
-    const first = temp.shift() as EpisodeDetail;
-    setEpisodes([...temp, first]);
-  };
+  const { isFetching, episodes, shuffle, refetch } = useRandomEpisodes(shows);
 
   return (
     <>
@@ -47,17 +15,13 @@ export default function RandomEpisodes() {
         {episodes.length > 0 &&
           !isFetching &&
           episodes.map((episode) => (
-            <EpisodeCard
-              key={episode.id}
-              onClick={handleShuffle}
-              episode={episode}
-            />
+            <EpisodeCard key={episode.id} onClick={shuffle} episode={episode} />
           ))}
       </div>
       <div
         className="refresh-button"
         onClick={() => {
-          if (localShows.length === 0 || isFetching) return;
+          if (shows.length === 0 || isFetching) return;
           refetch();
           if (svgRef.current) {
             svgRef.current.animate(

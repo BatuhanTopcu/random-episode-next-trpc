@@ -3,13 +3,13 @@ import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { trpc } from "@utils/trpc";
 
-export const useLocalShows = (): [Show[], (shows: Show[]) => void] => {
-  const [localShows, setLocalShowsState] = useState<Show[]>([]);
+export const useShows = (): [Show[], (shows: Show[]) => void] => {
+  const [shows, setShowsState] = useState<Show[]>([]);
   const session = useSession();
 
   const mutation = trpc.useMutation("show.set-shows");
 
-  const setLocalShows = (shows: Show[]) => {
+  const setShows = (shows: Show[]) => {
     const localStorageShows = localStorage.getItem("shows") || "[]";
     const newShows = JSON.stringify(shows);
     if (localStorageShows !== newShows) {
@@ -28,7 +28,7 @@ export const useLocalShows = (): [Show[], (shows: Show[]) => void] => {
     if (e.key !== "shows") return;
     const shows = e.newValue || "[]";
     const temp = JSON.parse(shows) as Show[];
-    setLocalShowsState(temp);
+    setShowsState(temp);
     if (session?.status === "authenticated") {
       mutation.mutate({ shows: temp });
     }
@@ -36,14 +36,14 @@ export const useLocalShows = (): [Show[], (shows: Show[]) => void] => {
 
   useEffect(() => {
     const temp = localStorage.getItem("shows");
-    setLocalShowsState(temp ? JSON.parse(temp) : []);
+    setShowsState(temp ? JSON.parse(temp) : []);
     window.addEventListener("storage", storageListener);
     return () => {
       window.removeEventListener("storage", storageListener);
     };
   }, []);
 
-  return [localShows, setLocalShows];
+  return [shows, setShows];
 };
 
 export const addRemoveShow = (show: Show) => {

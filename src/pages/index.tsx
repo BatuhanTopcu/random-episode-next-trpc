@@ -4,13 +4,13 @@ import ShowList from "@components/ShowList";
 import LoginButton from "@components/LoginButton";
 import type { NextPage } from "next";
 import Head from "next/head";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { trpc } from "@utils/trpc";
-import { useLocalShows } from "@utils/localStorage";
+import { useShows } from "@utils/shows";
 
 const Home: NextPage = () => {
   const { data: session } = useSession();
-  const [_, setLocalShows] = useLocalShows();
+  const [shows, setShows] = useShows();
 
   trpc.useQuery(["show.get-shows"], {
     refetchOnWindowFocus: false,
@@ -19,7 +19,7 @@ const Home: NextPage = () => {
     enabled: session?.user ? true : false,
     onSuccess: (data) => {
       if (data) {
-        setLocalShows(data.shows);
+        setShows(data.shows);
       }
     },
   });
@@ -36,8 +36,8 @@ const Home: NextPage = () => {
       </Head>
       <div className="App">
         <Search />
-        <RandomEpisodes />
-        <ShowList />
+        <RandomEpisodes shows={shows} />
+        <ShowList shows={shows} />
         <LoginButton />
       </div>
     </>
