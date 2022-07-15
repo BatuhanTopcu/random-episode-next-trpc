@@ -3,9 +3,23 @@ import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { trpc } from "@utils/trpc";
 
-export const useShows = (): [Show[], (shows: Show[]) => void] => {
+export const useShows = (): Show[] => {
   const [shows, setShowsState] = useState<Show[]>([]);
   const session = useSession();
+
+  trpc.useQuery(["show.get-shows"], {
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    enabled: session?.data?.user ? true : false,
+    onSuccess: async (data) => {
+      if (data && data.shows.length > 0) {
+        setShows(data.shows);
+      } else {
+        await mutation.mutateAsync({ shows: shows });
+      }
+    },
+  });
 
   const mutation = trpc.useMutation("show.set-shows");
 
@@ -24,13 +38,13 @@ export const useShows = (): [Show[], (shows: Show[]) => void] => {
     }
   };
 
-  const storageListener = (e: StorageEvent) => {
+  const storageListener = async (e: StorageEvent) => {
     if (e.key !== "shows") return;
     const shows = e.newValue || "[]";
     const temp = JSON.parse(shows) as Show[];
     setShowsState(temp);
     if (session?.status === "authenticated") {
-      mutation.mutate({ shows: temp });
+      await mutation.mutateAsync({ shows: temp });
     }
   };
 
@@ -43,7 +57,7 @@ export const useShows = (): [Show[], (shows: Show[]) => void] => {
     };
   }, []);
 
-  return [shows, setShows];
+  return shows;
 };
 
 export const addRemoveShow = (show: Show) => {

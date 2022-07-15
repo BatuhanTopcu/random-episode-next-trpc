@@ -4,25 +4,11 @@ import ShowList from "@components/ShowList";
 import LoginButton from "@components/LoginButton";
 import type { NextPage } from "next";
 import Head from "next/head";
-import { useSession } from "next-auth/react";
 import { trpc } from "@utils/trpc";
 import { useShows } from "@utils/shows";
 
 const Home: NextPage = () => {
-  const { data: session } = useSession();
-  const [shows, setShows] = useShows();
-
-  trpc.useQuery(["show.get-shows"], {
-    refetchOnWindowFocus: false,
-    refetchOnMount: false,
-    refetchOnReconnect: false,
-    enabled: session?.user ? true : false,
-    onSuccess: (data) => {
-      if (data) {
-        setShows(data.shows);
-      }
-    },
-  });
+  const shows = useShows();
 
   return (
     <>

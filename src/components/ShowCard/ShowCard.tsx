@@ -6,7 +6,7 @@ const IMG_BASE = "http://image.tmdb.org/t/p/original";
 type ClickState = "none" | "once" | "twice";
 
 export default function ShowCard({ show }: { show: Show }) {
-  const [shows] = useShows();
+  const shows = useShows();
   const isAdded = useMemo(
     () => shows.some((s) => s.id === show.id),
     [shows, show.id]
