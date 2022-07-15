@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from "react";
 import type { Show } from "@types";
-import { addRemoveShow, useShows } from "@utils/shows";
+import { addRemoveShow, useShows } from "@utils/hooks/useShows";
 const IMG_BASE = "http://image.tmdb.org/t/p/original";
 
 type ClickState = "none" | "once" | "twice";

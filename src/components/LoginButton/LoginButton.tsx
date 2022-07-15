@@ -1,11 +1,19 @@
-import { useSession, signIn, signOut } from "next-auth/react";
+import type { Session } from "next-auth";
 
-export default function LoginCard() {
-  const { data } = useSession();
+type ILoginButtonProps = {
+  data: Session | null;
+  click: () => void;
+  loggedClick: () => void;
+};
 
+export default function LoginButton({
+  data,
+  click,
+  loggedClick,
+}: ILoginButtonProps) {
   if (data?.user) {
     return (
-      <div className="login__fab" onClick={() => signOut()}>
+      <div className="login__fab" onClick={loggedClick}>
         {data.user?.image && (
           // eslint-disable-next-line @next/next/no-img-element
           <img
@@ -19,7 +27,7 @@ export default function LoginCard() {
     );
   } else {
     return (
-      <div className="login__fab" onClick={() => signIn("google")}>
+      <div className="login__fab" onClick={click}>
         G
       </div>
     );

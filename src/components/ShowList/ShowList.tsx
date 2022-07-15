@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import ShowCard from "@components/ShowCard";
-import { useShows } from "@utils/shows";
+import { useShows } from "@utils/hooks";
 import { useOutsideAlerter } from "@utils/hooks";
 import { Show } from "@types";
 

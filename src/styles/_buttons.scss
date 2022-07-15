@@ -1,0 +1,27 @@
+.common-button {
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: $transition;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  filter: $dark-shadow;
+  &:hover {
+    opacity: 0.7;
+  }
+}
+
+.button__delete {
+  @extend .common-button;
+  background-color: #d61c4e;
+  color: #fff;
+}
+
+.button__logout {
+  @extend .common-button;
+  background-color: #cfd2cf;
+}

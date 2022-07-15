@@ -1,14 +1,16 @@
 @import "_reset.scss";
 @import "_fonts.scss";
 @import "_variables.scss";
+@import "_buttons.scss";
 @import "components/EpisodeCard.scss";
 @import "components/ShowList.scss";
 @import "components/Search.scss";
 @import "components/ShowCard.scss";
 @import "components/EpisodeContainer.scss";
 @import "components/LoadingBar.scss";
-@import "components/LoginButton.scss";
+@import "components/UserInfo.scss";
 @import "components/Fab.scss";
+@import "components/Popup.scss";
 
 body {
   background-color: $color-primary;
