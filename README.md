@@ -1,3 +1,28 @@
-# Create T3 App
+## Deploy
 
-This is an app bootstrapped according to the [init.tips](https://init.tips) stack, also known as the T3-Stack.
+Web: [https://random-episode.vercel.app/](https://random-episode.vercel.app/)
+
+Github: https://github.com/BatuhanTopcu/random-episode-next-trpc
+
+## Stack
+
+- NextJS
+- tRPC
+- Prisma
+- NextAuth
+
+## Todo
+
+- [x]  Port App to T3 Stack
+- [x]  Deploy on Vercel
+- [x]  Deploy db on PlanetScale
+- [x]  Auth + DB logic
+- [x]  Google login
+- [x]  Sync between local storage and db
+- [x]  Write Github Readme
+- [ ]  Clear DB if user not logged in for certain days
+- [ ]  Clear SCSS for fabs
+- [ ]  Add watched episodes logic for logged users
+Needs redesign for episode cards
+- [ ]  Fix double random episode request when user logged in
+Maybe add login loading?
