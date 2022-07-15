@@ -8,7 +8,11 @@ export default function LoginCard() {
       <div className="login__fab" onClick={() => signOut()}>
         {data.user?.image && (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={data.user?.image} alt={data.user?.name || ""} />
+          <img
+            className="cover"
+            src={data.user?.image}
+            alt={data.user?.name || ""}
+          />
         )}
         {!data.user?.image && "X"}
       </div>
