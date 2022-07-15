@@ -3,40 +3,20 @@ import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { trpc } from "@utils/trpc";
 
-export const useShows = (): Show[] => {
+export const useShows = () => {
   const [shows, setShowsState] = useState<Show[]>([]);
   const session = useSession();
 
-  trpc.useQuery(["show.get-shows"], {
+  const mutation = trpc.useMutation("show.set-shows");
+
+  const { data, isLoading } = trpc.useQuery(["show.get-shows"], {
     refetchOnWindowFocus: false,
     refetchOnMount: false,
     refetchOnReconnect: false,
-    enabled: session?.data?.user ? true : false,
-    onSuccess: async (data) => {
-      if (data && data.shows.length > 0) {
-        setShows(data.shows);
-      } else {
-        await mutation.mutateAsync({ shows: shows });
-      }
-    },
+    enabled: session?.status === "authenticated" ? true : false,
   });
 
-  const mutation = trpc.useMutation("show.set-shows");
-
-  const setShows = (shows: Show[]) => {
-    const localStorageShows = localStorage.getItem("shows") || "[]";
-    const newShows = JSON.stringify(shows);
-    if (localStorageShows !== newShows) {
-      localStorage.setItem("shows", newShows);
-      window.dispatchEvent(
-        new StorageEvent("storage", {
-          key: "shows",
-          oldValue: localStorageShows,
-          newValue: newShows,
-        })
-      );
-    }
-  };
+  const showsLoading = isLoading || session.status === "loading";
 
   const storageListener = async (e: StorageEvent) => {
     if (e.key !== "shows") return;
@@ -49,15 +29,31 @@ export const useShows = (): Show[] => {
   };
 
   useEffect(() => {
-    const temp = localStorage.getItem("shows");
-    setShowsState(temp ? JSON.parse(temp) : []);
+    if (showsLoading) return;
+    if (session.status === "unauthenticated") {
+      const temp = localStorage.getItem("shows");
+      setShowsState(temp ? JSON.parse(temp) : []);
+    }
+    if (session.status === "authenticated") {
+      const dbShows = data?.shows || [];
+      const temp = localStorage.getItem("shows");
+      const localShows = temp ? JSON.parse(temp) : [];
+      if (dbShows.length > 0) {
+        setShowsState(dbShows);
+      } else {
+        setShowsState(localShows);
+      }
+    }
+  }, [data?.shows, session.status]);
+
+  useEffect(() => {
     window.addEventListener("storage", storageListener);
     return () => {
       window.removeEventListener("storage", storageListener);
     };
   }, []);
 
-  return shows;
+  return { shows, showsLoading };
 };
 
 export const addRemoveShow = (show: Show) => {

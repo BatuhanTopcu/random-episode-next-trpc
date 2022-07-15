@@ -1,15 +1,16 @@
-import { useState } from "react";
 import Popup from "@components/Popup";
 import LoginButton from "@components/LoginButton";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { trpc } from "@utils/trpc";
+import usePopupStore from "@store/popupStore";
+import shallow from "zustand/shallow";
 
-type IUserInfoPopupProps = {
-  show: boolean;
-  setShow: (show: boolean) => void;
-};
+export default function UserInfoPopup() {
+  const { show, setShow } = usePopupStore(
+    (state) => ({ show: state.showUserInfo, setShow: state.setShowUserInfo }),
+    shallow
+  );
 
-export default function UserInfoPopup({ show, setShow }: IUserInfoPopupProps) {
   const { data } = useSession();
   const mutation = trpc.useMutation("user.delete-user");
 

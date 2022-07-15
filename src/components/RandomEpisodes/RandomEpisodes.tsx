@@ -1,12 +1,11 @@
 import React, { useRef } from "react";
 import { useRandomEpisodes } from "@utils/hooks";
-import type { Show } from "@types";
 import EpisodeCard from "./EpisodeCard";
 import LoadingBar from "@components/LoadingBar";
 
-export default function RandomEpisodes({ shows }: { shows: Show[] }) {
+export default function RandomEpisodes() {
   const svgRef = useRef<SVGSVGElement>(null);
-  const { isFetching, episodes, shuffle, refetch } = useRandomEpisodes(shows);
+  const { isFetching, episodes, shuffle, refetch } = useRandomEpisodes();
 
   return (
     <>
@@ -21,7 +20,7 @@ export default function RandomEpisodes({ shows }: { shows: Show[] }) {
       <div
         className="refresh-button"
         onClick={() => {
-          if (shows.length === 0 || isFetching) return;
+          if (isFetching) return;
           refetch();
           if (svgRef.current) {
             svgRef.current.animate(

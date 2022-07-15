@@ -2,10 +2,14 @@ import { EpisodeDetail, Show } from "@types";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { trpc } from "../trpc";
+import { useShows } from "./useShows";
 
-export const useRandomEpisodes = (shows: Show[]) => {
+export const useRandomEpisodes = () => {
   const { status } = useSession();
   const [episodes, setEpisodes] = useState<EpisodeDetail[]>([]);
+
+  const { shows } = useShows();
+
   const { isFetching, refetch } = trpc.useQuery(
     [
       "randomEpisode",
