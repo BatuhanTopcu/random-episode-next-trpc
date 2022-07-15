@@ -4,10 +4,12 @@ import type { EpisodeDetail } from "@types";
 import EpisodeCard from "./EpisodeCard";
 import LoadingBar from "@components/LoadingBar";
 import { trpc } from "@utils/trpc";
+import { useSession } from "next-auth/react";
 
 export default function RandomEpisodes() {
   const [localShows] = useLocalShows();
   const [episodes, setEpisodes] = useState<EpisodeDetail[]>([]);
+  const { status } = useSession();
 
   const { isFetching, refetch } = trpc.useQuery(
     [
@@ -25,7 +27,7 @@ export default function RandomEpisodes() {
         console.error(error);
         setEpisodes([]);
       },
-      enabled: localShows.length > 0,
+      enabled: localShows.length > 0 && status !== "loading",
     }
   );
 
