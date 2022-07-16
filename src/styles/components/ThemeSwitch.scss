@@ -6,6 +6,7 @@
   gap: 7px;
   h1 {
     text-align: center;
+    filter: $dark-shadow;
   }
   .theme-info {
     display: flex;
@@ -17,8 +18,10 @@
     font-weight: bold;
     padding: 7px 10px;
     z-index: 1;
+    cursor: pointer;
     h1 {
       font-size: 1.2rem;
+      filter: $dark-shadow;
     }
     .colors {
       display: flex;
@@ -30,5 +33,6 @@
     height: 25px;
     border-radius: 50%;
     filter: $dark-shadow;
+    border: 2px solid $color-text;
   }
 }

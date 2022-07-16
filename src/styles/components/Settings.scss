@@ -31,10 +31,12 @@
   h1 {
     font-size: 1.5rem;
     font-weight: 600;
+    filter: $dark-shadow;
   }
   h2 {
     font-size: 1.2rem;
     font-weight: 500;
+    filter: $dark-shadow;
   }
 }
 

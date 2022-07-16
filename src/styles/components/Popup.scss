@@ -42,6 +42,7 @@
   font-size: 1.3rem;
   font-weight: bold;
   position: relative;
+  filter: $dark-shadow;
   &__close {
     position: absolute;
     top: 0;
@@ -54,11 +55,6 @@
       color: $color-text;
       transition: $transition;
     }
-    // &:hover {
-    //   svg {
-    //     transform: scale(1.2);
-    //   }
-    // }
   }
 }
 
