@@ -20,14 +20,14 @@
   h1.title {
     font-size: 1.5rem;
     font-weight: 500;
-    color: $color-text-light;
+    color: $color-text;
     text-align: center;
     margin-bottom: 15px;
   }
   h2.no-item {
     font-size: 1.2rem;
     font-weight: 500;
-    color: $color-text-light;
+    color: $color-text;
     text-align: center;
   }
   &__scroll {
@@ -48,8 +48,5 @@
   right: 10px;
   font-size: 2rem;
   font-weight: 600;
-  color: $color-text-light;
-  &:hover {
-    background-color: $color-secondary-light;
-  }
+  color: $color-text;
 }

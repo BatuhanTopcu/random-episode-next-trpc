@@ -3,12 +3,42 @@ $black-shadow: drop-shadow(0px 2px 2px #000);
 
 $transition: all 0.2s ease-in-out;
 
-$color-text-light: #e9d5ca;
-$color-text-dark: #1a1a1a;
+.theme-1 {
+  --color-text: #d8d8d8;
+  --color-text-contrast: #06283d;
+  --color-primary: #dff6ff;
+  --color-primary-light: #e8a0bf;
+  --color-primary-dark: #06283d;
+  --color-accent: #980f5a;
+  --color-accent-light: #827397;
+}
 
-$color-primary: #e9d5ca;
-$color-primary-light: #827397;
-$color-primary-dark: #363062;
+.theme-2 {
+  --color-text: #d8d8d8;
+  --color-text-contrast: #171717;
+  --color-primary: #000000;
+  --color-primary-light: #827397;
+  --color-primary-dark: #171717;
+  --color-accent: #000000;
+  --color-accent-light: #35001d;
+}
 
-$color-secondary: #827397;
-$color-secondary-light: #980f5a;
+.theme-3 {
+  --color-text: #d8d8d8;
+  --color-text-contrast: #1a1a1a;
+  --color-primary: #e8a0bf;
+  --color-primary-light: #e8a0bf;
+  --color-primary-dark: #810955;
+  --color-accent: #980f5a;
+  --color-accent-light: #827397;
+}
+
+$color-text: var(--color-text);
+$color-text-contrast: var(--color-text-contrast);
+
+$color-primary: var(--color-primary);
+$color-primary-light: var(--color-primary-light);
+$color-primary-dark: var(--color-primary-dark);
+
+$color-accent: var(--color-accent);
+$color-accent-light: var(--color-accent-light);

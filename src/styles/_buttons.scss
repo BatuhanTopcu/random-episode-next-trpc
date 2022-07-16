@@ -23,5 +23,12 @@
 
 .button__logout {
   @extend .common-button;
-  background-color: #cfd2cf;
+  background-color: #8b8b8b;
+  color: #fff;
+}
+
+.button__login {
+  @extend .common-button;
+  background-color: #cecece;
+  color: #171717;
 }

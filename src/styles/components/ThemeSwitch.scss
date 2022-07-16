@@ -1,0 +1,34 @@
+.theme-switch {
+  width: 100%;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  h1 {
+    text-align: center;
+  }
+  .theme-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 30px;
+    color: $color-text;
+    font-weight: bold;
+    padding: 7px 10px;
+    z-index: 1;
+    h1 {
+      font-size: 1.2rem;
+    }
+    .colors {
+      display: flex;
+      gap: 10px;
+    }
+  }
+  .color-ball {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    filter: $dark-shadow;
+  }
+}

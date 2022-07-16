@@ -6,9 +6,11 @@
   left: 10px;
   font-size: 2rem;
   font-weight: 600;
-  color: $color-text-light;
-  &:hover {
-    background-color: $color-secondary-light;
+  color: $color-text;
+  .icon {
+    width: 40px;
+    height: 40px;
+    color: $color-text;
   }
 }
 
@@ -29,22 +31,21 @@
   h1 {
     font-size: 1.5rem;
     font-weight: 600;
-    color: $color-text-dark;
   }
   h2 {
     font-size: 1.2rem;
     font-weight: 500;
-    color: $color-text-dark;
   }
-  .button-container {
-    margin-top: 20px;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    width: 100%;
-    gap: 10px;
-    @media screen and (max-width: 600px) {
-      flex-direction: column;
-    }
+}
+
+.button-container {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+  gap: 10px;
+  @media screen and (max-width: 600px) {
+    flex-direction: column;
   }
 }

@@ -17,17 +17,17 @@
     font-size: 1.4rem;
     font-weight: 500;
     background-color: transparent;
-    color: $color-text-light;
+    color: $color-text;
     outline: none;
     transition: $transition;
     &::placeholder {
-      color: $color-text-light;
+      color: $color-text;
       padding-left: 6px;
     }
     &:focus {
       background-color: $color-primary;
       padding-left: 10px;
-      color: $color-primary-dark;
+      color: $color-text-contrast;
       & ~ .search-icon {
         transform: translateX(-10px);
         opacity: 0;
@@ -40,7 +40,7 @@
     left: 10px;
     width: 1.5rem;
     height: 1.5rem;
-    stroke: $color-text-light;
+    stroke: $color-text;
     transition: $transition;
     pointer-events: none;
   }
@@ -77,7 +77,7 @@
     .no-result {
       font-size: 1.2rem;
       font-weight: 500;
-      color: $color-text-light;
+      color: $color-text;
       text-align: center;
       padding: 10px 0;
     }

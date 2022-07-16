@@ -8,7 +8,7 @@ export const useRandomEpisodes = () => {
   const { status } = useSession();
   const [episodes, setEpisodes] = useState<EpisodeDetail[]>([]);
 
-  const { shows } = useShows();
+  const { shows, showsLoading } = useShows();
 
   const { isFetching, refetch } = trpc.useQuery(
     [
@@ -19,6 +19,8 @@ export const useRandomEpisodes = () => {
     ],
     {
       refetchOnWindowFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
       onSuccess: (data) => {
         setEpisodes(data.episodes);
       },
@@ -26,7 +28,7 @@ export const useRandomEpisodes = () => {
         console.error(error);
         setEpisodes([]);
       },
-      enabled: shows.length > 0 && status !== "loading",
+      enabled: shows.length > 0 && status !== "loading" && !showsLoading,
     }
   );
 
