@@ -27,8 +27,8 @@ export const useTheme = () => {
     if (theme && themeNames.includes(theme)) {
       document.body.classList.add(theme);
     } else {
-      localStorage.setItem("theme", "theme-0");
-      document.body.classList.add("theme-0");
+      localStorage.setItem("theme", "theme-1");
+      document.body.classList.add("theme-1");
     }
   }, []);
 };
