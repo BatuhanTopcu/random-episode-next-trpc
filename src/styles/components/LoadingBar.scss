@@ -1,4 +1,4 @@
-$circleRadius: 20px;
+$circleRadius: 25px;
 $circleCount: 5;
 $gap: 10px;
 $animationDuration: 0.2s;
@@ -20,15 +20,14 @@ $animationDuration: 0.2s;
     animation: jump $animationDuration infinite alternate;
     bottom: $gap;
     filter: $dark-shadow;
+    background-color: $color-primary-dark;
+    border: 2px solid $color-text;
+    filter: $dark-shadow;
   }
   @for $i from 1 through $circleCount {
     div:nth-child(#{$i}) {
       left: $circleRadius * ($i - 1) + $gap * $i;
-      background-color: hsl(
-        283,
-        61%,
-        ($circleCount - $i) * calc(100 / $circleCount) * 1%
-      );
+      opacity: calc(1 - 0.5 / $circleCount * $i);
       animation-delay: calc($animationDuration / 3 * ($i - 1));
     }
   }
